@@ -86,19 +86,13 @@
         const currentDate = new Date().toLocaleDateString('default',  //it works
         {day: '2-digit', month: '2-digit', year: '2-digit'}) + " "+ 
         new Date().toLocaleTimeString().slice(0,-3);
-
-
       
           nameInEl.classList.remove("error");  //it works
-          
-          
-          if (nameInEl.value.length === 0) {       
-            nameInEl.classList.add("error");          //it works
-            return;
-          } 
+          textInEl.classList.remove("error");
+                     
           if (textInEl.value.length === 0 && nameInEl.value.length === 0) {       
-            textInEl.classList.add("error");       
-             
+            textInEl.classList.add("error");  
+            nameInEl.classList.add("error")     
             return;
           }
            if (textInEl.value.length === 0){
@@ -107,7 +101,10 @@
             return;
             
            }
-
+           if (nameInEl.value.length === 0) {       
+            nameInEl.classList.add("error");          //it works
+            return;
+          }
            
       const oldCommentsHtml = commentsElement.innerHTML;
     commentsElement.innerHTML = oldCommentsHtml + `<li class="comment">
