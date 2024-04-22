@@ -90,21 +90,22 @@
           nameInEl.classList.remove("error");  //it works
           textInEl.classList.remove("error");
                      
-          if (textInEl.value.length === 0 && nameInEl.value.length === 0) {       
+          if (nameInEl.value.length === 0 && textInEl.value.length === 0) {       
+            nameInEl.classList.add("error");
             textInEl.classList.add("error");  
-            nameInEl.classList.add("error")     
             return;
           }
-           if (textInEl.value.length === 0){
-            textInEl.classList.add("Error");
-            alert('Пожалуйста введите коментарий')
-            return;
-            
-           }
+                   
            if (nameInEl.value.length === 0) {       
             nameInEl.classList.add("error");          //it works
             return;
           }
+          if (textInEl.value.length === 0){
+            textInEl.classList.add("error");
+            return;
+            alert('Пожалуйста оставьте коментарий');
+            
+           }
            
       const oldCommentsHtml = commentsElement.innerHTML;
     commentsElement.innerHTML = oldCommentsHtml + `<li class="comment">
@@ -128,7 +129,9 @@
 
     });
     
-    
+    //document.getElementById("name-input").value = '';    
+   // document.getElementById("text-input").value = '';  
+         
     console.log("It works!");
   </script>
 </html>
