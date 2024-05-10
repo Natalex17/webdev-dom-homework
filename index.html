@@ -82,6 +82,7 @@
       const listElement = document.getElementById("list");      //работает
       const nameInEl = document.getElementById("name-input");    //работае 
       const textInEl = document.getElementById("text-input");  
+      // const commentHTML = document.getElementById('.comment'); перенесла в функцию ансвенс 
       
       
       //создаем [] 
@@ -133,6 +134,7 @@
       listElement.innerHTML = commentsHtml;
 
       likeEvent();
+      answerComment();
      };
      
       renderComments();
@@ -158,12 +160,14 @@
   }
       comments[index].isLiked = !comments[index].isLiked;
   renderComments();
-
     
     });
   }
 }
-
+function sanitize(text){
+  return text.replaceAll("<", "&lt;").replaceAll(">", "&gt;")
+  .replaceAll('QUOTE_BEGIN', '<div class="quote">').replaceAll('QUOTE_END', '</div>');
+}
      
       buttonElement.addEventListener("click", () => {
         
@@ -188,12 +192,13 @@
             textInEl.classList.add("error");
             return;          
            }
-           //<strong> Глеб </strong>` и <h1> Коммент </h1>.
+
+           //<strong> Глеб </strong>` и <h1> Коммент </h>
            //<img src="." onerror="alert('ха-ха, ваши данные украдены!');">
            comments.push({
-            name: nameInEl.value.replaceAll("<", "&lt;").replaceAll(">", "&lt;"),
+            name: sanitize (nameInEl.value),
             data: currentDate,
-            comment: textInEl.value.replaceAll("<", "&lt;").replaceAll(">", "&lt;"), 
+            comment: sanitize (textInEl.value),
             like: 0,
             isLiked: false
            });
@@ -203,8 +208,16 @@
         likeEvent();
         nameInEl.value = "";
         textInEl.value = "";
-    });
-    
+    })
+
+     function answerComment() {
+      const commentHTML = document.querySelectorAll('.comment');
+      commentHTML.forEach((el, i) => {
+        el.addEventListener('click', ()=> {
+          textInEl.value = `QUOTE_BEGIN>${comments[i].name}\n ${comments[i].comment}QUOTE_END`;        //выводи соментарий и имя на которое будем отвечать \n -перенос на другую строку      
+        });
+      });
+     }
     //удаление элементов списка:
     // 1. добавить в разметку кнопку "удалить" 
     // 2. добавить на кнопки удаления обработчик клика
