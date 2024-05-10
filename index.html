@@ -8,8 +8,9 @@
 
   <body>
     <div class="container">
-      <ul class="comments" id ="comments">
-        <li class="comment">
+      <ul class="comments" id ="list">
+        <!--Рендерятся из js
+       <li class="comment">
           <div class="comment-header">
             <div>Глеб Фокин</div>
             <div>12.02.22 12:18</div>
@@ -20,7 +21,7 @@
             </div>
           </div>
           <div class="comment-footer">
-            <div class="likes">
+            <div class="likes" data-color="">
               <span class="likes-counter">3</span>
               <button class="like-button"></button>
             </div>
@@ -35,14 +36,15 @@
           <div class="comment-text">
             Мне нравится как оформлена эта страница! ❤
           </div>
-        </div>
-        <div class="comment-footer">
-          <div class="likes">
-            <span class="likes-counter">75</span>
-            <button class="like-button -active-like"></button>
+
+          <div class="comment-footer">
+            <div class="likes" data-color="">
+              <span class="likes-counter">75</span>
+              <button class="like-button -active-like"></button>
+            </div>
           </div>
-        </div> 
-       </li>
+        </li>-->
+        
       </ul>
 
 
@@ -75,11 +77,94 @@
       }
     </style>
     <script>
-      const buttonElement = document.getElementById("add-form-button"); //работает
-      const commentsElement = document.getElementById("comments");      //работает
+      const buttonElement = document.getElementById("add-form-button")
+      const listElement = document.getElementById("list");      //работает
       const nameInEl = document.getElementById("name-input");    //работае 
       const textInEl = document.getElementById("text-input");  
-         
+      
+      
+      //создаем [] 
+      const comments = [
+        {
+          name: 'Глеб Фокин',
+          data: '12.02.22 12:18',
+          comment: 'Это будет первый комментарий на этой странице',
+          like: '3',
+          isLiked: false
+
+        },
+        {
+          name: 'Варвара Н.',
+          data: '13.02.22 19:22',
+          comment: 'Мне нравится как оформлена эта страница! ❤',
+          like: '75',
+          isLiked: true
+
+        },
+      ];
+      
+
+     const renderComments = () =>{
+      const commentsHtml = comments.
+      map((comments, index) => {
+
+      return `<li class="comment">
+         <div class="comment-header">
+         <div>${comments.name}</div>
+         <div>${comments.data}</div>       
+         </div>
+        <div class="comment-body">
+        <div class="comment-text">${comments.comment}
+            </div>
+        </div>
+        <div class="comment-footer">
+      <div class="likes" data-color= "">
+       <span class="likes-counter">${comments.like}</span>
+       <button class="like-button ${comments.isLiked ? '-active-like' : ''}
+        "data-index= ${index}></button>
+           </div>
+     </div>  
+     </li>`;
+     
+       
+        }).join(" ");
+               
+      listElement.innerHTML = commentsHtml;
+
+      likeEvent();
+     };
+     
+      renderComments();
+     
+      
+   function likeEvent () {
+  
+             //Находит элементы с классом Лайкес в разметке
+       const likes = document.querySelectorAll('.like-button');
+    //цик фор проходит по каждому элем. в списке
+   for (const likeElement of likes) {
+    //Добовляет обработчик клика на конкретный элемент в списке
+   likeElement.addEventListener("click", (e) => {
+     e.stopPropagation();
+     //const index = likeElement.dataset.index;
+    // const direction = comments[index].isLiked ? -1: +1;
+     //comments[index].like += direction;
+
+  if (comments[likeElement.dataset.index].isLiked) {
+    comments[likeElement.dataset.index].isLiked = false;
+     comments[likeElement.dataset.index].like --; 
+  } else {
+    comments[likeElement.dataset.index].isLiked = true;
+    comments[likeElement.dataset.index].like ++;
+
+  }
+  renderComments();
+
+    
+    });
+  }
+}
+
      
       buttonElement.addEventListener("click", () => {
         
@@ -102,36 +187,28 @@
           }
           if (textInEl.value.length === 0){
             textInEl.classList.add("error");
-            return;
-            alert('Пожалуйста оставьте коментарий');
-            
+            return;          
            }
            
-      const oldCommentsHtml = commentsElement.innerHTML;
-    commentsElement.innerHTML = oldCommentsHtml + `<li class="comment">
-          <div class="comment-header">
-            <div>${nameInEl.value}</div>
-            <div> ${currentDate} </div>       
-          </div>
-          <div class="comment-body">
-            <div class="comment-text">${textInEl.value}
-            </div>
-          </div>
-          <div class="comment-footer">
-            <div class="likes">
-              <span class="likes-counter">0</span>
-              <button class="like-button"></button>
-            </div>
-          </div>
-        </li>`
+           comments.push({
+            name: nameInEl.value,
+            data: currentDate,
+            comment: textInEl.value ,
+            like: 0,
+            isLiked: false
+           });
+           
         
-    
-
+        renderComments(); 
+        likeEvent();
+        nameInEl.value = "";
+        textInEl.value = "";
     });
     
-    //document.getElementById("name-input").value = '';    
-   // document.getElementById("text-input").value = '';  
-         
+    //удаление элементов списка:
+    // 1. добавить в разметку кнопку "удалить" 
+    // 2. добавить на кнопки удаления обработчик клика
+    // 3. реализовать внутри обработчика удаления элементов      
     console.log("It works!");
   </script>
  </html>
