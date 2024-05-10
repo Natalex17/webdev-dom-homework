@@ -147,21 +147,16 @@
     //Добовляет обработчик клика на конкретный элемент в списке
    likeElement.addEventListener("click", (e) => {
      e.stopPropagation();
-    // const index = likeElement.dataset.index;
-    // const direction = comments[index].isLiked ? -1: +1;
-    // comments[index].like += direction;
 
-    //Повторяющийся код определения индекса можно
-    // вынести в переменную
-
-  if (comments[likeElement.dataset.index].isLiked) {
-  comments[likeElement.dataset.index].isLiked = false;
-  comments[likeElement.dataset.index].like --; 
- } else {
-  comments[likeElement.dataset.index].isLiked = true;
-  comments[likeElement.dataset.index].like ++;
-
+    const index = likeElement.dataset.index;  
+    const direction = comments[index].isLiked ? -1: +1;
+       
+  if (comments[index].isLiked) {
+      comments[index].like --; 
+  } else {
+      comments[index].like ++;
   }
+      comments[index].isLiked = !comments[index].isLiked;
   renderComments();
 
     
@@ -193,11 +188,12 @@
             textInEl.classList.add("error");
             return;          
            }
+           //<strong> Глеб </strong>` и <h1> Коммент </h1>.
            //<img src="." onerror="alert('ха-ха, ваши данные украдены!');">
            comments.push({
             name: nameInEl.value.replaceAll("<", "&lt;").replaceAll(">", "&lt;"),
             data: currentDate,
-            comment: textInEl.value ,
+            comment: textInEl.value.replaceAll("<", "&lt;").replaceAll(">", "&lt;"), 
             like: 0,
             isLiked: false
            });
