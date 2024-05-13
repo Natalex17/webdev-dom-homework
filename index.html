@@ -69,18 +69,20 @@
    
   
   
-    "use strict";
-    // Код писать здесь
+    
      <style>
        .error {
         background-color: red;
       }
     </style>
     <script>
+      "use strict";
+    // Код писать здесь
       const buttonElement = document.getElementById("add-form-button")
       const listElement = document.getElementById("list");      //работает
       const nameInEl = document.getElementById("name-input");    //работае 
       const textInEl = document.getElementById("text-input");  
+      // const commentHTML = document.getElementById('.comment'); перенесла в функцию ансвенс 
       
       
       //создаем [] 
@@ -132,6 +134,7 @@
       listElement.innerHTML = commentsHtml;
 
       likeEvent();
+      answerComment();
      };
      
       renderComments();
@@ -146,25 +149,25 @@
     //Добовляет обработчик клика на конкретный элемент в списке
    likeElement.addEventListener("click", (e) => {
      e.stopPropagation();
-     //const index = likeElement.dataset.index;
-    // const direction = comments[index].isLiked ? -1: +1;
-     //comments[index].like += direction;
 
-  if (comments[likeElement.dataset.index].isLiked) {
-    comments[likeElement.dataset.index].isLiked = false;
-     comments[likeElement.dataset.index].like --; 
+    const index = likeElement.dataset.index;  
+    const direction = comments[index].isLiked ? -1: +1;
+       
+  if (comments[index].isLiked) {
+      comments[index].like --; 
   } else {
-    comments[likeElement.dataset.index].isLiked = true;
-    comments[likeElement.dataset.index].like ++;
-
+      comments[index].like ++;
   }
+      comments[index].isLiked = !comments[index].isLiked;
   renderComments();
-
     
     });
   }
 }
-
+function sanitize(text){
+  return text.replaceAll("<", "&lt;").replaceAll(">", "&gt;")
+  .replaceAll('QUOTE_BEGIN', '<div class="quote">').replaceAll('QUOTE_END', '</div>');
+}
      
       buttonElement.addEventListener("click", () => {
         
@@ -189,22 +192,32 @@
             textInEl.classList.add("error");
             return;          
            }
-           
+
+           //<strong> Глеб </strong>` и <h1> Коммент </h>
+           //<img src="." onerror="alert('ха-ха, ваши данные украдены!');">
            comments.push({
-            name: nameInEl.value,
+            name: sanitize (nameInEl.value),
             data: currentDate,
-            comment: textInEl.value ,
+            comment: sanitize (textInEl.value),
             like: 0,
             isLiked: false
            });
            
         
         renderComments(); 
-        likeEvent();
+        //likeEvent();
         nameInEl.value = "";
         textInEl.value = "";
-    });
-    
+    })
+
+     function answerComment() {
+      const commentHTML = document.querySelectorAll('.comment');
+      commentHTML.forEach((el, i) => {
+        el.addEventListener('click', ()=> {
+          textInEl.value = `QUOTE_BEGIN>${comments[i].name}\n ${comments[i].comment}QUOTE_END`;        //выводи соментарий и имя на которое будем отвечать \n -перенос на другую строку      
+        });
+      });
+     }
     //удаление элементов списка:
     // 1. добавить в разметку кнопку "удалить" 
     // 2. добавить на кнопки удаления обработчик клика
