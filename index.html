@@ -84,16 +84,33 @@
       const textInEl = document.getElementById("text-input");  
       // const commentHTML = document.getElementById('.comment'); перенесла в функцию ансвенс 
       
+      let fetchPromise = fetch('https://wedev-api.sky.pro/api/v1/natalex/comments',
+        {
+          method: "GET",
+        });
       
+
+        fetchPromise.then((response) => {
+          const jsonPromise = response.json();
+
+          jsonPromise.then((responseData) => {
+            console.log(responseData);
+
+            //comments = responseData.todos;
+            renderComments();
+          });
+        });
+      
+
+      //TODO: получать из хранлища данных
       //создаем [] 
-      const comments = [
+      let comments = [
         {
           name: 'Глеб Фокин',
           data: '12.02.22 12:18',
           comment: 'Это будет первый комментарий на этой странице',
           like: '3',
           isLiked: false
-
         },
         {
           name: 'Варвара Н.',
@@ -101,7 +118,6 @@
           comment: 'Мне нравится как оформлена эта страница! ❤',
           like: '75',
           isLiked: true
-
         },
       ];
       
@@ -137,8 +153,11 @@
       answerComment();
      };
      
-      renderComments();
      
+     // TODO: удалят из хранилища данных
+      renderComments();
+
+     // Здесь должна быть функция по удалению
       
    function likeEvent () {
   
@@ -193,8 +212,10 @@ function sanitize(text){
             return;          
            }
 
-           //<strong> Глеб </strong>` и <h1> Коммент </h>
-           //<img src="." onerror="alert('ха-ха, ваши данные украдены!');">
+
+           //TODO: Добавлять задачу в хранилище кода
+                //<strong> Глеб </strong>` и <h1> Коммент </h>
+                //<img src="." onerror="alert('ха-ха, ваши данные украдены!');">
            comments.push({
             name: sanitize (nameInEl.value),
             data: currentDate,
@@ -205,7 +226,7 @@ function sanitize(text){
            
         
         renderComments(); 
-        //likeEvent();
+      
         nameInEl.value = "";
         textInEl.value = "";
     })
