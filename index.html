@@ -83,28 +83,40 @@
       const nameInEl = document.getElementById("name-input");    //работае 
       const textInEl = document.getElementById("text-input");  
       // const commentHTML = document.getElementById('.comment'); перенесла в функцию ансвенс 
-      
-      let fetchPromise = fetch('https://wedev-api.sky.pro/api/v1/natalex/comments',
-        {
-          method: "GET",
+          const promiseFetch = () => {
+
+      let fetchPromise = fetch ('https://wedev-api.sky.pro/api/v1/nataly-alpatova/comments',
+      {method: "GET",
+    });
+   
+    fetchPromise.then((response) => {
+     const jsonPromise = response.json();
+     jsonPromise.then((responseData) => {
+        console.log(responseData);
+        const appComments = responseData.comments.map((comment) => {
+          return{
+           // name: comments.author.name,
+            date: new Date (comments.data),
+            text: comments.comment,
+            like: comments.like,
+            isLiked: false,
+          };
         });
-      
 
-        fetchPromise.then((response) => {
-          const jsonPromise = response.json();
-
-          jsonPromise.then((responseData) => {
-            console.log(responseData);
-
-            //comments = responseData.todos;
-            renderComments();
-          });
-        });
-      
-
+       // renderComments = responseData.comments;
+        //comments = appComments;     
+        renderComments();
+      });
+    })};
+    //console.log(resultFetch);
+    promiseFetch();
       //TODO: получать из хранлища данных
+
+
+
+
       //создаем [] 
-      let comments = [
+      const comments = [
         {
           name: 'Глеб Фокин',
           data: '12.02.22 12:18',
@@ -159,9 +171,9 @@
 
      // Здесь должна быть функция по удалению
       
-   function likeEvent () {
   
-             //Находит элементы с классом Лайкес в разметке
+     function likeEvent () {
+               //Находит элементы с классом Лайкес в разметке
        const likes = document.querySelectorAll('.like-button');
     //цик фор проходит по каждому элем. в списке
    for (const likeElement of likes) {
@@ -211,7 +223,7 @@ function sanitize(text){
             textInEl.classList.add("error");
             return;          
            }
-
+        
 
            //TODO: Добавлять задачу в хранилище кода
                 //<strong> Глеб </strong>` и <h1> Коммент </h>
@@ -223,13 +235,15 @@ function sanitize(text){
             like: 0,
             isLiked: false
            });
-           
+      
         
         renderComments(); 
       
         nameInEl.value = "";
         textInEl.value = "";
-    })
+      })
+
+      
 
      function answerComment() {
       const commentHTML = document.querySelectorAll('.comment');
