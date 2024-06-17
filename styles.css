@@ -13,6 +13,9 @@ body {
     background: #202020;
     min-height: 100vh;
   }
+  .loader {
+    font-size: 32px;
+  }
 
   .comments,
   .comment {

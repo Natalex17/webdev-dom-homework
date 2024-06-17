@@ -8,10 +8,9 @@
 
 <body>
   <div class="container">
-    <div class="loader">подождите коментарий загружается</div>
+    <div class="loader">Подождите, коментарии загружаются...</div>
     <ul class="comments" id ="list">
       
-    <ul class="comments" id ="list">
       <!--Рендерятся из js
         <li class="comment">
           <div class="comment-header">
@@ -50,12 +49,12 @@
           
         </ul>
         
-         <div class="add-form">
+        <div class="add-form">
           <input
           type="text"
           class="add-form-name" id ="name-input" value=""
           placeholder="Введите ваше имя"
-           />
+          />
           <textarea
           type="textarea"
           class="add-form-text" id ="text-input" value=""
@@ -224,6 +223,7 @@
       if (nameInEl.value.trim ()==="") {       
         nameInEl.classList.add("error");          //it works
         return;
+        //alert ("Имя должно содержать хотя бы 3 символа.")
       }
       if (textInEl.value.trim ()===""){
         textInEl.classList.add("error");
@@ -254,10 +254,22 @@
         {method: "POST",
         body:JSON.stringify({
           name:sanitize(nameInEl.value),
-          text:sanitize(textInEl.value)
-        })        
-      }).then(() => {
-        
+          text:sanitize(textInEl.value),
+          forceError: true,
+        }),        
+      }).then((response) => {
+        console.log(response);
+        if (response.status === 400) {            
+          throw new Error ("Неверный запрос") 
+          
+        }
+        if (response.status === 500) { 
+                  //Код который обрабатывает ошибку
+          throw new Error ("Сервер не отвечает");
+        } 
+        else {
+          return response.json();
+        }
         
       }).then(() =>{
         return getComments();
@@ -268,16 +280,23 @@
         nameInEl.value = "";
         textInEl.value = "";
         
-      })
-      .catch((error) => {
-        alert("Кажется что-то пошло не так, попробуйте позже..");
-      })
+      }).catch((error) => {
+        buttonElement.disabled = false;
+        buttonElement.textContent = 'Написать';
+        
+        if(error.message === "Неверный запрос") {
+        alert ("Имя и коментарий должны содержать не менее 3-х символов.");
+          
+        };        
+        if(error.message === "Сервер не отвечает"){
+         alert ("Сервер не отвечает, попробуйте позже..");
+        }
+        //TODO: Отправлять в сиситему сбора ошибок
+        console.warn(error);
+      });
       deleteComment();
       answerComment();
     }
-    
-    
-    
     
     
     
