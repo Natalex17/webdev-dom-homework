@@ -9,7 +9,7 @@ const buttonElement = document.getElementById("add-form-button");
 const deleteButton = document.getElementById('delete-button');
 const nameInEl = document.getElementById("name-input");   
 const textInEl = document.getElementById("text-input");
-const commentHTML = document.getElementById('.comment')
+const commentHTML = document.getElementById ('.comment')
 
 
 
