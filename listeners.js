@@ -1,5 +1,6 @@
 import { comments } from "./main.js";
 import { renderComments } from "./render.js";
+import { renderLogin } from "./renderLogin.js";
 
 export function likeEvent() {
     //Находит элементы с классом Лайкес в разметке
@@ -30,7 +31,7 @@ export function likeEvent() {
     });
   }
 
-  function deleteComment() {
+  function deleteComment({id}) {
     deleteButton.addEventListener('click', (event) => {
       event.stopPropagation();
       const id = deleteButton.dataset.id;
@@ -46,6 +47,15 @@ export function likeEvent() {
         });
     })
   }
+   export function setAuthLinkListener({container}){
+    const authLink = document.querySelector(".auth-link")
+    authLink.addEventListener('click', () =>{
+      renderLogin({
+        container
+      }) 
+    })
+   }
+
   //удаление элементов списка:
 // 1. добавить в разметку кнопку "удалить" 
 // 2. добавить на кнопки удаления обработчик клика
