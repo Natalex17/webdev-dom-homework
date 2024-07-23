@@ -1,9 +1,9 @@
-import { login } from "./api.js";
-import { setUser } from "./main.js";
-import { renderMainPage } from "./renderMainPage.js";
+import { login } from './api.js'
+import { setUser } from './main.js'
+import { renderMainPage } from './renderMainPage.js'
 
-export function renderLogin ({container}){
-container.innerHTML= ` <div class="form">
+export function renderLogin({ container }) {
+    container.innerHTML = ` <div class="form">
         <div class="add-form">
         <h3 class="form-title">Форма входа</h3>
             <input
@@ -21,19 +21,22 @@ container.innerHTML= ` <div class="form">
           
           </div>
         </div>`
-        const loginInput=document.getElementById ("login-input");
-        const passwordInput=document.getElementById ("password-input");
-        const loginButton=document.getElementById ("login-button");
-        loginButton.addEventListener("click", (event)=>{
-            event.preventDefault()
-            if (!loginInput.value.trim() || !passwordInput.value.trim()){
-                alert ("Вы не заполнили поля")
-                return
-            }
-            login({login:loginInput.value, password: passwordInput.value})
-            .then((data)=>{
+    const loginInput = document.getElementById('login-input')
+    const passwordInput = document.getElementById('password-input')
+    const loginButton = document.getElementById('login-button')
+    loginButton.addEventListener('click', (event) => {
+        event.preventDefault()
+        if (!loginInput.value.trim() || !passwordInput.value.trim()) {
+            alert('Вы не заполнили поля')
+            return
+        }
+        login({ login: loginInput.value, password: passwordInput.value })
+            .then((data) => {
                 setUser(data.user)
-                renderMainPage({container});
-            }).catch ((error)=> {alert (error.message)})
-        }) 
+                renderMainPage({ container })
+            })
+            .catch((error) => {
+                alert(error.message)
+            })
+    })
 }
