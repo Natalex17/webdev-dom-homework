@@ -1,6 +1,6 @@
 import { postCom } from "./api.js";
 import { sanitize } from "./helpers.js";
-import { getComments } from "./main.js";
+import { getComments, user } from "./main.js";
 
 export function addComment() {
     const buttonElement = document.getElementById("add-form-button")
@@ -30,7 +30,9 @@ export function addComment() {
         
     postCom({
         name: sanitize(nameInEl.value),
-        text: sanitize(textInEl.value)
+        text: sanitize(textInEl.value),
+        token: user.token
+
       
       }).then(() => {
         return getComments();
@@ -38,7 +40,6 @@ export function addComment() {
       }).then((data) => {
         buttonElement.disabled = false;
         buttonElement.textContent = 'Написать';
-        nameInEl.value = "";
         textInEl.value = "";
       
       })

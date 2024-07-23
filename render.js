@@ -1,5 +1,6 @@
+import { sanitize } from "./helpers.js";
 import { answerComment, likeEvent } from "./listeners.js";
-import { comments } from "./main.js";
+import { comments, user } from "./main.js";
 
 export const renderComments = () => {
     const listElement = document.getElementById("list"); 
@@ -8,7 +9,7 @@ export const renderComments = () => {
   
         return `<li class="comment">
             <div class="comment-header">
-              <div>${comments.name}</div>
+              <div>${sanitize(comments.name)}</div>
               <div>${comments.date.toLocaleDateString()}</div>       
             </div>
             <div class="comment-body">
@@ -28,9 +29,12 @@ export const renderComments = () => {
       }).join(" ");
   
     listElement.innerHTML = commentsHtml;
-  
+    if (user){
     likeEvent();
     answerComment();
+    }
+      
   
   };
+  
   

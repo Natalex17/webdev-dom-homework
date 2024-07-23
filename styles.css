@@ -100,7 +100,9 @@ body {
     display: flex;
     flex-direction: column;
   }
-
+  #login-button,
+  .add-form-login,
+  .add-form-password,
   .add-form-name,
   .add-form-text {
     font-size: 16px;
@@ -120,11 +122,18 @@ body {
     resize: none;
   }
 
+  .add-form-password,
+  .add-form-login{
+    margin-top: 12px;
+    padding: 11px 22px;
+    background-color: #e6f3c4;
+  }
+
   .add-form-row {
     display: flex;
     justify-content: flex-end;
   }
-
+  
   #add-form-button {
     margin-top: 24px;
     font-size: 24px;
@@ -134,10 +143,31 @@ body {
     border-radius: 18px;
     cursor: pointer;
   }
+  #login-button{
+    width: 556px;
+    margin-top: 12px;
+    font-size: 18px;
+    padding: 11px 22px;
+    background-color: #bcec30;
+    border: none;
+    border-radius: 16px;
+    cursor: pointer;
+
+}
+  
 
   .add-form-button:hover {
     opacity: 0.9;
   }
+  .auth-link {
+    color: #ffffff;
+    font-size: 20px;
+  
+  }
+  .form-auth{
+    margin-top: 24px;
+}
+  
   .delete-form-button {
     margin-top: 24px;
     font-size: 14px;
@@ -155,3 +185,4 @@ body {
   .quote {
     background: #ccc6d7;
   }
+  
