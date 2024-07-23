@@ -1,9 +1,10 @@
-import { addComment } from "./addComent.js";
-import { setAuthLinkListener } from "./listeners.js";
-import { user } from "./main.js";
+import { addComment } from './addComent.js'
+import { setAuthLinkListener } from './listeners.js'
+import { user } from './main.js'
 
-export function renderForm({container}) {
-    container.innerHTML= user ? `<div class="add-form">
+export function renderForm({ container }) {
+    container.innerHTML = user
+        ? `<div class="add-form">
           <input
           type="text"
           class="add-form-name" id ="name-input" value="${user.name}"
@@ -21,8 +22,11 @@ export function renderForm({container}) {
           </div>
           <div><button id="delete-button" class="delete-form-button">Удалить последний комментарий</button>
           </div>
-        </div>`:
-        `<div class = "form-auth"> Чтобы оставить коментарий, <a class="auth-link" href="#">авторизуйтесь</a> </div>`
-        user ? addComment(): setAuthLinkListener({container:document.querySelector(".container")})
-
+        </div>`
+        : `<div class = "form-auth"> Чтобы оставить коментарий, <a class="auth-link" href="#">авторизуйтесь</a> </div>`
+    user
+        ? addComment()
+        : setAuthLinkListener({
+              container: document.querySelector('.container'),
+          })
 }

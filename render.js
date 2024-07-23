@@ -1,16 +1,16 @@
-import { sanitize } from "./helpers.js";
-import { answerComment, likeEvent } from "./listeners.js";
-import { comments, user } from "./main.js";
+import { sanitize } from './helpers.js'
+import { answerComment, likeEvent } from './listeners.js'
+import { comments, user } from './main.js'
+import { format } from 'date-fns'
 
 export const renderComments = () => {
-    const listElement = document.getElementById("list"); 
-    const commentsHtml = comments.
-      map((comments, index) => {
-  
-        return `<li class="comment">
+    const listElement = document.getElementById('list')
+    const commentsHtml = comments
+        .map((comments, index) => {
+            return `<li class="comment">
             <div class="comment-header">
               <div>${sanitize(comments.name)}</div>
-              <div>${comments.date.toLocaleDateString()}</div>       
+              <div>${format(comments.date, 'yyyy-MM-dd hh.mm.ss')}</div>       
             </div>
             <div class="comment-body">
               <div class="comment-text">${comments.text}
@@ -23,18 +23,13 @@ export const renderComments = () => {
                 "data-index= ${index}></button>
               </div>
             </div>  
-          </li>`;
-  
-  
-      }).join(" ");
-  
-    listElement.innerHTML = commentsHtml;
-    if (user){
-    likeEvent();
-    answerComment();
+          </li>`
+        })
+        .join(' ')
+
+    listElement.innerHTML = commentsHtml
+    if (user) {
+        likeEvent()
+        answerComment()
     }
-      
-  
-  };
-  
-  
+}
